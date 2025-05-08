@@ -618,6 +618,209 @@
 
 # else:
 #     st.info("Please upload a CSV file from the sidebar to begin!")
+# import streamlit as st
+# import pandas as pd
+# import plotly.express as px
+# import shap
+# import joblib
+# import os
+# import numpy as np
+# import matplotlib.pyplot as plt
+# import seaborn as sns
+# from test import detect_identity_fraud, detect_synthetic_fraud, detect_mule_accounts
+
+# # Paths
+# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# MODEL_DIR = os.path.join(BASE_DIR, "models")
+
+# # Load models
+# rf_model = joblib.load(os.path.join(MODEL_DIR, "random_forest.pkl"))
+# xgb_model = joblib.load(os.path.join(MODEL_DIR, "xgboost.pkl"))
+# iso_forest = joblib.load(os.path.join(MODEL_DIR, "isolation_forest.pkl"))
+
+# # Streamlit config
+# st.set_page_config(page_title="Fraud Detection App ", layout="wide")
+# st.title(" Fraud Detection Dashboard")
+
+# # Preprocessing
+
+# def preprocess_data(df):
+#     df = df.dropna()
+#     df = df.apply(pd.to_numeric, errors='coerce')
+#     df = df.dropna()
+#     if len(df) > 5000:
+#         df = df.sample(5000, random_state=42)
+#     return df
+
+# # Label detection
+
+# def find_label_column(df):
+#     candidates = ['Class', 'isFraud', 'fraud', 'label', 'target']
+#     for col in df.columns:
+#         if col.lower() in [c.lower() for c in candidates]:
+#             return col
+#     return None
+
+# # Fraud labels
+
+# def assign_fraud_labels(df, score_column='Detection_Score'):
+#     df['Fraud_Level'] = pd.cut(
+#         df[score_column],
+#         bins=[-0.01, 0.5, 0.8, 1.0],
+#         labels=[' Likely Normal', ' Mild Anomaly', ' Very Suspicious']
+#     )
+#     return df
+
+# # SHAP summary and top 10 bar plot
+
+# def plot_shap_summary(model, X, plot_type):
+#     model_features = model.feature_names_in_
+#     X = X[[col for col in model_features if col in X.columns]]
+#     explainer = shap.Explainer(model)
+#     sample_X = X.sample(min(300, len(X)), random_state=42)
+#     shap_values = explainer(sample_X)
+
+#     st.subheader(" SHAP Summary Plot")
+#     plt.figure()
+
+#     try:
+#         # Handle multi-class outputs
+#         if hasattr(shap_values, 'values') and shap_values.values.ndim == 3:
+#             # Pick fraud class (1)
+#             shap_values.values = shap_values.values[:, :, 1]
+#             shap_values.data = shap_values.data  # Optional: match structure
+#             shap_values.base_values = shap_values.base_values[:, 1] if shap_values.base_values.ndim > 1 else shap_values.base_values
+
+#         if plot_type == "Bar Plot":
+#             shap.plots.bar(shap_values, max_display=10, show=False)
+#         else:
+#             shap.plots.beeswarm(shap_values, max_display=20, show=False)
+
+#         st.pyplot(plt.gcf())
+#         plt.clf()
+
+#         # Show top 10 importance
+#         importance = np.abs(shap_values.values).mean(axis=0)
+#         top10 = pd.DataFrame({
+#             'Feature': sample_X.columns,
+#             'Importance': importance
+#         }).sort_values('Importance', ascending=False).head(10)
+
+#         st.subheader(" Top 10 Fraud-Contributing Features")
+#         st.dataframe(top10)
+#         fig, ax = plt.subplots(figsize=(8, 5))
+#         sns.barplot(data=top10, x='Importance', y='Feature', palette='coolwarm', ax=ax)
+#         ax.set_title("Top 10 SHAP Feature Importances")
+#         st.pyplot(fig)
+#         plt.clf()
+
+#         csv = top10.to_csv(index=False).encode('utf-8')
+#         st.download_button("Download Top 10 Feature Importances", data=csv, file_name="top_10_fraud_factors.csv")
+
+#     except Exception as e:
+#         st.error(f"Failed to render SHAP plot: {e}")
+
+# # Safe predict_proba
+
+# def safe_predict_proba(model, df):
+#     features = model.feature_names_in_
+#     df = df[[col for col in features if col in df.columns]]
+#     return model.predict_proba(df)[:, 1]
+
+# # Upload section
+# st.header("Upload your Dataset ")
+# uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
+
+# if uploaded_file:
+#     df = pd.read_csv(uploaded_file)
+#     df = preprocess_data(df)
+#     st.success(" File Uploaded and Preprocessed!")
+
+#     st.subheader(" Dataset Preview")
+#     st.dataframe(df, use_container_width=True)
+
+#     label_col = find_label_column(df)
+#     if label_col:
+#         pie_data = df[label_col].value_counts().reset_index()
+#         pie_data.columns = ['Label', 'Count']
+#         pie_data['Label'] = pie_data['Label'].map({0: 'Normal', 1: 'Fraud', -1: 'Anomaly'}).fillna('Other')
+#         fig = px.pie(pie_data, names='Label', values='Count', title="Normal vs Fraud Data ",
+#                      color_discrete_sequence=px.colors.sequential.RdBu)
+#         st.plotly_chart(fig, use_container_width=True)
+#     else:
+#         st.info("No label column found. Pie chart skipped.")
+
+#     st.markdown("---")
+#     st.subheader(" Fraud Detection Section")
+#     col1, col2, col3 = st.sidebar.columns(3)
+
+#     if col1.button(" Detect Identity Theft"):
+#         with st.spinner("Running Identity Theft Detection..."):
+#             fraud_df = detect_identity_fraud(df)
+#             fraud_df['Detection_Score'] = safe_predict_proba(rf_model, fraud_df)
+#             fraud_df = assign_fraud_labels(fraud_df)
+#             st.session_state.fraud_df = fraud_df
+#             st.session_state.fraud_model = rf_model
+#             st.session_state.input_df = df.drop(columns=[label_col], errors="ignore")
+#             st.success(f"Detected {len(fraud_df)} identity theft cases.")
+#             st.dataframe(fraud_df)
+#             csv = fraud_df.to_csv(index=False).encode('utf-8')
+#             st.download_button("Download Identity Thefts", data=csv, file_name='identity_thefts.csv')
+
+#     if col2.button(" Detect Synthetic Identities"):
+#         with st.spinner("Running Synthetic Identity Detection..."):
+#             fraud_df = detect_synthetic_fraud(df)
+#             fraud_df['Detection_Score'] = safe_predict_proba(xgb_model, fraud_df)
+#             fraud_df = assign_fraud_labels(fraud_df)
+#             st.session_state.fraud_df = fraud_df
+#             st.session_state.fraud_model = xgb_model
+#             st.session_state.input_df = df.drop(columns=[label_col], errors="ignore")
+#             st.success(f"Detected {len(fraud_df)} synthetic identities.")
+#             st.dataframe(fraud_df)
+#             csv = fraud_df.to_csv(index=False).encode('utf-8')
+#             st.download_button("Download Synthetic Identities", data=csv, file_name='synthetic_identities.csv')
+
+#     if col3.button(" Detect Mule Accounts"):
+#         with st.spinner("Running Mule Account Detection..."):
+#             fraud_df = detect_mule_accounts(df)
+#             fraud_df['Detection_Score'] = (fraud_df['Detection_Score'] - fraud_df['Detection_Score'].min()) / \
+#                                           (fraud_df['Detection_Score'].max() - fraud_df['Detection_Score'].min())
+#             fraud_df = assign_fraud_labels(fraud_df)
+#             st.session_state.fraud_df = fraud_df
+#             st.session_state.fraud_model = None
+#             st.success(f"Detected {len(fraud_df)} mule accounts.")
+#             st.dataframe(fraud_df)
+#             csv = fraud_df.to_csv(index=False).encode('utf-8')
+#             st.download_button("Download Mule Accounts", data=csv, file_name='mule_accounts.csv')
+
+#     if "fraud_df" in st.session_state and not st.session_state.fraud_df.empty and "fraud_model" in st.session_state and st.session_state.fraud_model:
+#         st.markdown("---")
+#         st.subheader("🔍 SHAP for Individual Fraud Case")
+
+#         selected_index = st.selectbox("Select a row to explain", st.session_state.fraud_df.index.tolist(), key="row_selector")
+
+#         if selected_index is not None:
+#             row = st.session_state.fraud_df.loc[selected_index]
+#             model = st.session_state.fraud_model
+#             input_data = row[model.feature_names_in_].values.reshape(1, -1)
+
+#             # Create SHAP explainer and explain single instance
+#             explainer = shap.Explainer(model)
+#             shap_values = explainer(input_data)
+
+#             st.write("### Selected Row")
+#             st.dataframe(row.to_frame().T, use_container_width=True)
+
+#             st.write("### SHAP Force Plot for Selected Row")
+#             shap.initjs()
+#             st_shap = st.components.v1.html(shap.plots.force(shap_values[0], matplotlib=False), height=300)
+
+#             st.write("### SHAP Waterfall Plot")
+#             fig = shap.plots.waterfall(shap_values[0], max_display=10, show=False)
+#             st.pyplot(fig.figure)
+
+# else:
+#     st.info("Please upload a CSV file to begin.")
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -632,6 +835,7 @@ from test import detect_identity_fraud, detect_synthetic_fraud, detect_mule_acco
 # Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_DIR = os.path.join(BASE_DIR, "models")
+DATA_PATH = os.path.join(BASE_DIR, "data")
 
 # Load models
 rf_model = joblib.load(os.path.join(MODEL_DIR, "random_forest.pkl"))
@@ -643,7 +847,6 @@ st.set_page_config(page_title="Fraud Detection App ", layout="wide")
 st.title(" Fraud Detection Dashboard")
 
 # Preprocessing
-
 def preprocess_data(df):
     df = df.dropna()
     df = df.apply(pd.to_numeric, errors='coerce')
@@ -653,7 +856,6 @@ def preprocess_data(df):
     return df
 
 # Label detection
-
 def find_label_column(df):
     candidates = ['Class', 'isFraud', 'fraud', 'label', 'target']
     for col in df.columns:
@@ -662,7 +864,6 @@ def find_label_column(df):
     return None
 
 # Fraud labels
-
 def assign_fraud_labels(df, score_column='Detection_Score'):
     df['Fraud_Level'] = pd.cut(
         df[score_column],
@@ -672,7 +873,6 @@ def assign_fraud_labels(df, score_column='Detection_Score'):
     return df
 
 # SHAP summary and top 10 bar plot
-
 def plot_shap_summary(model, X, plot_type):
     model_features = model.feature_names_in_
     X = X[[col for col in model_features if col in X.columns]]
@@ -684,11 +884,8 @@ def plot_shap_summary(model, X, plot_type):
     plt.figure()
 
     try:
-        # Handle multi-class outputs
         if hasattr(shap_values, 'values') and shap_values.values.ndim == 3:
-            # Pick fraud class (1)
             shap_values.values = shap_values.values[:, :, 1]
-            shap_values.data = shap_values.data  # Optional: match structure
             shap_values.base_values = shap_values.base_values[:, 1] if shap_values.base_values.ndim > 1 else shap_values.base_values
 
         if plot_type == "Bar Plot":
@@ -699,7 +896,6 @@ def plot_shap_summary(model, X, plot_type):
         st.pyplot(plt.gcf())
         plt.clf()
 
-        # Show top 10 importance
         importance = np.abs(shap_values.values).mean(axis=0)
         top10 = pd.DataFrame({
             'Feature': sample_X.columns,
@@ -721,20 +917,25 @@ def plot_shap_summary(model, X, plot_type):
         st.error(f"Failed to render SHAP plot: {e}")
 
 # Safe predict_proba
-
 def safe_predict_proba(model, df):
     features = model.feature_names_in_
     df = df[[col for col in features if col in df.columns]]
     return model.predict_proba(df)[:, 1]
 
-# Upload section
-st.header("Upload your Dataset ")
-uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
+# File selection
+st.sidebar.header("Data Source")
+data_files = [f for f in os.listdir(DATA_PATH) if f.endswith(".csv")]
+selected_file = st.sidebar.selectbox("Select dataset to load", data_files)
 
-if uploaded_file:
-    df = pd.read_csv(uploaded_file)
-    df = preprocess_data(df)
-    st.success(" File Uploaded and Preprocessed!")
+if selected_file:
+    file_path = os.path.join(DATA_PATH, selected_file)
+    try:
+        df = pd.read_csv(file_path)
+        df = preprocess_data(df)
+        st.success(f"✅ Loaded dataset: {selected_file}")
+    except Exception as e:
+        st.error(f"Failed to load dataset: {e}")
+        st.stop()
 
     st.subheader(" Dataset Preview")
     st.dataframe(df, use_container_width=True)
@@ -752,7 +953,7 @@ if uploaded_file:
 
     st.markdown("---")
     st.subheader(" Fraud Detection Section")
-    col1, col2, col3 = st.sidebar.columns(3)
+    col1, col2, col3 = st.columns(3)
 
     if col1.button(" Detect Identity Theft"):
         with st.spinner("Running Identity Theft Detection..."):
@@ -799,4 +1000,4 @@ if uploaded_file:
         plot_type = st.radio("Choose SHAP Plot Type", ["Bar Plot", "Beeswarm Plot"], horizontal=True, key="shap_radio")
         plot_shap_summary(st.session_state.fraud_model, st.session_state.input_df, plot_type)
 else:
-    st.info("Please upload a CSV file to begin.")
+    st.info("Please select a CSV file from the sidebar.")
