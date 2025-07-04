@@ -14,7 +14,7 @@ file_paths = {
 
 if dataset_choice in file_paths:
     data = pd.read_csv(file_paths[dataset_choice])
-    print(f"✅ Loaded {dataset_choice} dataset successfully!\n")
+    print(f" Loaded {dataset_choice} dataset successfully!\n")
 else:
     raise ValueError(" Invalid dataset selection. Choose from: banksim, creditcard, or paysim.")
 
@@ -45,7 +45,7 @@ print(" Feature Correlation with Target:\n", correlation_with_target.dropna())  
 # Plot heatmap of correlations
 plt.figure(figsize=(12, 8))
 sns.heatmap(correlation_matrix, cmap="coolwarm", annot=False)
-plt.title("Feature Correlation Heatmap")  # Removed 🔥 to avoid font issues
+plt.title("Feature Correlation Heatmap")  # Removed  to avoid font issues
 plt.show()
 
 # Train a small XGBoost model for SHAP analysis
