@@ -292,7 +292,7 @@ def preprocess_user_device_data(filepath):
         os.path.join(OUTPUT_DIR, "processed_user_device_data_enhanced_xxl.csv"),
         index=False
     )
-    print("✅ Saved as 'processed_user_device_data_enhancedllll.csv'")
+    print(" Saved as 'processed_user_device_data_enhancedllll.csv'")
     # y = df['suspicious'] if 'suspicious' in df.columns else None
     # return X_scaled, y, features.columns
 
@@ -306,4 +306,4 @@ if __name__ == "__main__":
     if y is not None:
         processed_df["suspicious"] = y.values
     processed_df.to_csv(os.path.join(OUTPUT_DIR, "processed_user_device_data_enhanced.csv2"), index=False)
-    print("✅ Saved as 'processed_user_device_data_xl.csv'")
+    print(" Saved as 'processed_user_device_data_xl.csv'")
