@@ -1407,11 +1407,11 @@ if "user_id" not in st.session_state:
     st.session_state.user_id = ""
 
 
-st.set_page_config(page_title="🛡️ Insurance Fraud Detection", layout="wide")
+st.set_page_config(page_title=" Insurance Fraud Detection", layout="wide")
 
 # -- AUTHENTICATION UI ------------------------
 if not st.session_state.authenticated:
-    st.title("🔐 Login / Signup")
+    st.title(" Login / Signup")
 
     tab = st.sidebar.radio("Select", ["Login", "Signup", "Verify OTP", "Forgot Password"])
 
