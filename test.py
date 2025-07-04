@@ -125,7 +125,7 @@ def load_threshold(model_name):
 #     # present = [col for col in required if col in df.columns]
 #     # if len(present) < len(required):
 #     #     missing = list(set(required) - set(df.columns))
-#     #     print(f"⚠️ Missing features: {missing}")
+#     #     print(f" Missing features: {missing}")
 #     # return df[present]
 #     feature_names = list(model.feature_names_in_)
 #     missing = [f for f in feature_names if f not in df.columns]
@@ -242,7 +242,7 @@ def generate_fraud_profile(user_id, device_id, model, X_row, threshold=0.5):
 #             log_file.write(json.dumps(profile) + "\n")
 
 
-#     print(f"✅ {len(profiles)} fraud profiles saved to fraud_profiles.json")
+#     print(f" {len(profiles)} fraud profiles saved to fraud_profiles.json")
 #     import shap
 
 #     explainer = shap.TreeExplainer(model)
@@ -264,7 +264,7 @@ from sklearn.ensemble import IsolationForest
 #     model.load_model(os.path.join(MODEL_DIR, "catboost_user_device_model.cbm"))
 #     threshold = float(open(os.path.join(MODEL_DIR, "catboost_user_device_threshold.txt")).read())
 
-#     # 🛠️ Add iso_score if not already in df
+#     # Add iso_score if not already in df
 #     if "iso_score" not in df.columns:
 #         iso = IsolationForest(n_estimators=100, contamination=0.01, random_state=42)
 #         # Use numeric features only
@@ -321,7 +321,7 @@ from sklearn.ensemble import IsolationForest
 #             data=X_sample.iloc[0]
 #         )
 #     )
-#     print(f"✅ {len(profiles)} fraud profiles saved to fraud_profiles.json")
+#     print(f"{len(profiles)} fraud profiles saved to fraud_profiles.json")
 #     return fraud_cases
 def detect_user_device_fraud(df):
     model = CatBoostClassifier()
@@ -382,5 +382,5 @@ def detect_user_device_fraud(df):
         )
     )
 
-    print(f"✅ {len(profiles)} fraud profiles saved to fraud_profiles.json")
+    print(f" {len(profiles)} fraud profiles saved to fraud_profiles.json")
     return fraud_cases
