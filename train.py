@@ -119,7 +119,7 @@ FINGERPRINT_FEATURES = [
 #     grid = GridSearchCV(estimator=pipe, param_grid=rf_param_grid,
 #                         scoring="f1", cv=cv, n_jobs=-1, verbose=1)
 #     grid.fit(X_train, y_train)
-#     print("📌 Best RF params:", grid.best_params_, "| CV-F1:", grid.best_score_)
+#     print(" Best RF params:", grid.best_params_, "| CV-F1:", grid.best_score_)
 #     return grid.best_estimator_
 
 # def tune_xgb(X_train, y_train):
@@ -129,7 +129,7 @@ FINGERPRINT_FEATURES = [
 #     grid = GridSearchCV(estimator=pipe, param_grid=xgb_param_grid,
 #                         scoring="f1", cv=cv, n_jobs=-1, verbose=1)
 #     grid.fit(X_train, y_train)
-#     print("📌 Best XGB params:", grid.best_params_, "| CV-F1:", grid.best_score_)
+#     print(" Best XGB params:", grid.best_params_, "| CV-F1:", grid.best_score_)
 #     return grid.best_estimator_
 
 # def tune_lgb(X_train, y_train):
@@ -139,7 +139,7 @@ FINGERPRINT_FEATURES = [
 #     grid = GridSearchCV(estimator=pipe, param_grid=lgb_param_grid,
 #                         scoring="f1", cv=cv, n_jobs=-1, verbose=1)
 #     grid.fit(X_train, y_train)
-#     print("📌 Best LGBM params:", grid.best_params_, "| CV-F1:", grid.best_score_)
+#     print(" Best LGBM params:", grid.best_params_, "| CV-F1:", grid.best_score_)
 #     return grid.best_estimator_
 
 # def get_ensemble_model():
@@ -212,9 +212,9 @@ FINGERPRINT_FEATURES = [
 #         with open(os.path.join(MODEL_DIR, f"{model_name}_threshold.txt"), "w") as f:
 #             f.write(str(best_thresh))
 
-#         print(f"✅ Saved threshold: {best_thresh:.4f}\n")
+#         print(f" Saved threshold: {best_thresh:.4f}\n")
 # def train_user_device_model(filepath):
-#     print("📚 Loading preprocessed data from:", filepath)
+#     print(" Loading preprocessed data from:", filepath)
 #     df = pd.read_csv(filepath)
 
 #     # Target column
@@ -231,12 +231,12 @@ FINGERPRINT_FEATURES = [
 #     X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=0.2, random_state=42)
 
 #     # Apply SMOTE to balance training data
-#     print("🧬 Applying SMOTE for class balancing...")
+#     print(" Applying SMOTE for class balancing...")
 #     smote = SMOTE(random_state=42)
 #     X_train, y_train = smote.fit_resample(X_train, y_train)
 
 
-#     print("🚀 Training LightGBM model...")
+#     print(" Training LightGBM model...")
 #     model = lgb.LGBMClassifier(
 #         n_estimators=100,
 #         learning_rate=0.05,
@@ -246,12 +246,12 @@ FINGERPRINT_FEATURES = [
 
 #     # Evaluation
 #     y_pred = model.predict(X_test)
-#     print("✅ Accuracy:", accuracy_score(y_test, y_pred))
-#     print("📊 Report:\n", classification_report(y_test, y_pred))
+#     print(" Accuracy:", accuracy_score(y_test, y_pred))
+#     print(" Report:\n", classification_report(y_test, y_pred))
 
 #     # Save model
 #     joblib.dump(model, os.path.join(MODEL_DIR, "user_device_lightgbm.pkl"))
-#     print(f"✅ Model saved to {os.path.join(MODEL_DIR, 'user_device_lightgbm.pkl')}")
+#     print(f" Model saved to {os.path.join(MODEL_DIR, 'user_device_lightgbm.pkl')}")
 
 # # 1. Random Forest → banksim
 # rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
@@ -269,9 +269,9 @@ FINGERPRINT_FEATURES = [
 # iso_model = IsolationForest(n_estimators=100, contamination=0.05, random_state=42)
 # iso_model.fit(creditcard.drop(columns=["Class"]))
 # joblib.dump(iso_model, os.path.join(MODEL_DIR, "isolation_forest.pkl"))
-# print("✅ Isolation Forest saved.\n")
+# print(" Isolation Forest saved.\n")
 # def train_user_device_model(filepath):
-#     print("📚 Loading preprocessed data from:", filepath)
+#     print(" Loading preprocessed data from:", filepath)
 #     df = pd.read_csv(filepath)
 
 #     y = df['suspicious']
@@ -285,21 +285,21 @@ FINGERPRINT_FEATURES = [
 #     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 #     sm = SMOTE(random_state=42)
 #     X_train, y_train = sm.fit_resample(X_train, y_train)
-#     print("🚀 Training ensemble model (RF + XGBoost + LightGBM)...")
+#     print(" Training ensemble model (RF + XGBoost + LightGBM)...")
 #     model = get_ensemble_model()
 #     model.fit(X_train, y_train)
 #     y_probs = model.predict_proba(X_test)[:, 1]  # Probabilities for suspicious=1
 #     precision, recall, thresholds = precision_recall_curve(y_test, y_probs)
 #     f1_scores = 2 * (precision * recall) / (precision + recall + 1e-6)
 #     best_thresh = thresholds[f1_scores.argmax()]
-#     print(f"📌 Best Threshold for F1: {best_thresh:.3f}")
+#     print(f" Best Threshold for F1: {best_thresh:.3f}")
 #     y_pred = (y_probs >= best_thresh).astype(int)
 
-#     print("✅ Accuracy:", accuracy_score(y_test, y_pred))
-#     print("📊 Report:\n", classification_report(y_test, y_pred))
+#     print(" Accuracy:", accuracy_score(y_test, y_pred))
+#     print(" Report:\n", classification_report(y_test, y_pred))
 
 #     joblib.dump(model, os.path.join(MODEL_DIR, "user_device_ensemble.pkl"))
-#     print("✅ Ensemble model saved as user_device_ensemble.pkl")
+#     print(" Ensemble model saved as user_device_ensemble.pkl")
 #     import matplotlib.pyplot as plt
 #     import seaborn as sns
 
@@ -315,7 +315,7 @@ FINGERPRINT_FEATURES = [
 
 
 # def train_user_device_model(filepath):
-#     print("📚 Loading preprocessed data from:", filepath)
+#     print(" Loading preprocessed data from:", filepath)
 #     df = pd.read_csv(filepath)
 
 #     # 1. Split off labels
@@ -331,7 +331,7 @@ FINGERPRINT_FEATURES = [
 #     all_labels = np.zeros(len(X))
 
 #     # 3. Initialize CatBoost with class weights (fraud is rarer)
-#     print("🚀 Training CatBoostClassifier for user-device profiling…")
+#     print(" Training CatBoostClassifier for user-device profiling…")
 #     model = CatBoostClassifier(
 #         iterations=2000,
 #         learning_rate=0.01,
@@ -367,12 +367,12 @@ FINGERPRINT_FEATURES = [
 #         if gmean > best_gmean:
 #             best_gmean, best_thresh = gmean, t
 
-#     print(f"📌 Best G-mean threshold: {best_thresh:.3f}  (G-mean = {best_gmean:.3f})")
+#     print(f" Best G-mean threshold: {best_thresh:.3f}  (G-mean = {best_gmean:.3f})")
 #     y_pred = (y_probs >= best_thresh).astype(int)
 
 #     # 7. Evaluate final predictions
-#     print("✅ Final Accuracy:", accuracy_score(y_test, y_pred))
-#     print("📊 Final Classification Report:\n", classification_report(y_test, y_pred))
+#     print(" Final Accuracy:", accuracy_score(y_test, y_pred))
+#     print(" Final Classification Report:\n", classification_report(y_test, y_pred))
 
 #     # 8. (Optional) Show top CatBoost feature importances
 #     import matplotlib.pyplot as plt
@@ -382,7 +382,7 @@ FINGERPRINT_FEATURES = [
 #         model.get_feature_importance(), index=X.columns
 #     ).sort_values(ascending=False)
 
-#     print("📈 Top CatBoost Features:")
+#     print(" Top CatBoost Features:")
 #     print(feat_imp.head(10))
 
 #     plt.figure(figsize=(10, 6))
@@ -396,8 +396,8 @@ FINGERPRINT_FEATURES = [
 #     with open(os.path.join(MODEL_DIR, "catboost_user_device_threshold.txt"), "w") as f:
 #         f.write(str(best_thresh))
 
-#     print("✅ CatBoost model saved to 'catboost_user_device_model.cbm'")
-#     print("✅ Threshold saved to 'catboost_user_device_threshold.txt'")
+#     print(" CatBoost model saved to 'catboost_user_device_model.cbm'")
+#     print(" Threshold saved to 'catboost_user_device_threshold.txt'")
 def generate_balanced_data(filepath):
     df = pd.read_csv(filepath)
     y = df["suspicious"]
@@ -411,12 +411,12 @@ def generate_balanced_data(filepath):
     balanced_path = os.path.join(DATA_DIR, "balanced_user_device_data.csv")
     df_balanced.to_csv(balanced_path, index=False)
 
-    print("✅ Balanced dataset saved to:", balanced_path)
+    print(" Balanced dataset saved to:", balanced_path)
     return balanced_path
 
 
 def train_user_device_model(filepath):
-    print("📚 Loading preprocessed data from:", filepath)
+    print(" Loading preprocessed data from:", filepath)
     df = pd.read_csv(filepath)
 
     # 1. Split off labels
@@ -468,8 +468,8 @@ def train_user_device_model(filepath):
         preds.extend((y_probs >= best_thresh).astype(int))
         trues.extend(y_test)
 
-    print("✅ CV Accuracy:", accuracy_score(trues, preds))
-    print("📊 CV Classification Report:\n", classification_report(trues, preds))
+    print(" CV Accuracy:", accuracy_score(trues, preds))
+    print(" CV Classification Report:\n", classification_report(trues, preds))
 
     # 4. Train final model on full data with best threshold
     final_model = CatBoostClassifier(
@@ -488,11 +488,11 @@ def train_user_device_model(filepath):
     final_model.save_model(os.path.join(MODEL_DIR, "catboost_user_device_model.cbm"))
     with open(os.path.join(MODEL_DIR, "catboost_user_device_threshold.txt"), "w") as f:
         f.write(str(final_thresh))
-    print("✅ Final model saved to 'catboost_user_device_model.cbm'")
+    print(" Final model saved to 'catboost_user_device_model.cbm'")
 
     # 6. Feature Importance
     feat_imp = pd.Series(final_model.get_feature_importance(), index=X.columns).sort_values(ascending=False)
-    print("📈 Top CatBoost Features:\n", feat_imp.head(10))
+    print(" Top CatBoost Features:\n", feat_imp.head(10))
 
 # if __name__ == "__main__":
 #     train_user_device_model(os.path.join(DATA_DIR, "processed_user_device_profiling.csv"))
