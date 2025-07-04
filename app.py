@@ -37,33 +37,33 @@
 
 # # Streamlit Page Config
 # st.set_page_config(
-#     page_title="Fraud Detection App 🚨",
-#     page_icon="🔎",
+#     page_title="Fraud Detection App ",
+#     page_icon="",
 #     layout="wide"
 # )
 
 # # Animations
 # def animate_success():
-#     with st.spinner('Analyzing your data... 🚀'):
+#     with st.spinner('Analyzing your data... '):
 #         time.sleep(2)
-#     st.success('Done! See results below! 🎯')
+#     st.success('Done! See results below! ')
 
 # # Load your pre-trained model
 # model = joblib.load("models/xgboost.pkl")  # adjust path if needed
 # explainer = shap.Explainer(model)
 
 # # Title
-# st.title("🚨 Fraud Detection System with Explainable AI")
+# st.title(" Fraud Detection System with Explainable AI")
 # st.markdown("Upload your transactions to detect frauds and understand why they happen!")
 
 # # Layout: 2 Columns
 # left_col, right_col = st.columns([1, 2])
 
 # with left_col:
-#     uploaded_file = st.file_uploader("📂 Upload your CSV file", type=["csv"])
+#     uploaded_file = st.file_uploader(" Upload your CSV file", type=["csv"])
 
 # with right_col:
-#     st.info("👉 Please upload transaction data to detect frauds.\n\nSample format: [features used during training].")
+#     st.info(" Please upload transaction data to detect frauds.\n\nSample format: [features used during training].")
 
 # # If file uploaded
 # if uploaded_file:
@@ -78,21 +78,21 @@
 
 #     # Show detected frauds
 #     frauds = df[df["Prediction"] == 1]
-#     st.subheader("🕵️‍♂️ Defaulters (Detected Frauds):")
+#     st.subheader(" Defaulters (Detected Frauds):")
 #     st.dataframe(frauds)
 
 #     st.write("---")
 
 #     # SHAP Analysis
-#     st.subheader("📊 Top Reasons for Fraud Predictions (SHAP Summary)")
+#     st.subheader(" Top Reasons for Fraud Predictions (SHAP Summary)")
 #     shap_values = explainer(df.drop(columns=["Prediction"]))  # exclude prediction column
 #     st_shap.st_shap(shap.summary_plot(shap_values, df.drop(columns=["Prediction"]), plot_type="bar"), height=500)
 
 #     # Optional: Number of frauds detected
-#     st.success(f"✅ Total Frauds Detected: {len(frauds)} out of {len(df)} records!")
+#     st.success(f" Total Frauds Detected: {len(frauds)} out of {len(df)} records!")
 
 # else:
-#     st.warning("Please upload a file to begin fraud detection 🔍")
+#     st.warning("Please upload a file to begin fraud detection ")
 # import streamlit as st
 # import pandas as pd
 # import plotly.express as px
@@ -113,65 +113,65 @@
 # iso_forest = joblib.load(os.path.join(MODEL_DIR, "isolation_forest.pkl"))
 
 # # Streamlit App
-# st.set_page_config(page_title="Fraud Detection App 🚨", layout="wide")
-# st.title("🔎 Fraud Detection Dashboard")
+# st.set_page_config(page_title="Fraud Detection App ", layout="wide")
+# st.title(" Fraud Detection Dashboard")
 
-# st.sidebar.header("Upload your Dataset 📂")
+# st.sidebar.header("Upload your Dataset ")
 # uploaded_file = st.sidebar.file_uploader("Choose a CSV file", type="csv")
 
 # if uploaded_file is not None:
 #     df = pd.read_csv(uploaded_file)
-#     st.success("✅ File Uploaded Successfully!")
+#     st.success(" File Uploaded Successfully!")
 
 #     # Show full data
-#     st.subheader("Dataset Preview 📄")
+#     st.subheader("Dataset Preview ")
 #     st.dataframe(df, use_container_width=True)
 
 #     # Fraud Detection Section
-#     st.subheader("Fraud Detection Section 🧹")
+#     st.subheader("Fraud Detection Section ")
 
 #     col1, col2, col3 = st.columns(3)
 
 #     # Buttons for different frauds
-#     if col1.button("🔍 Identity Theft Check"):
+#     if col1.button(" Identity Theft Check"):
 #         identity_fraud = detect_identity_fraud(df)
-#         st.warning(f"👤 Identity Theft Cases Detected: {len(identity_fraud)}")
+#         st.warning(f" Identity Theft Cases Detected: {len(identity_fraud)}")
 #         st.dataframe(identity_fraud)
 #         csv = identity_fraud.to_csv(index=False).encode('utf-8')
-#         st.download_button("⬇️ Download Identity Thefts", data=csv, file_name='identity_fraud.csv', mime='text/csv')
+#         st.download_button("⬇ Download Identity Thefts", data=csv, file_name='identity_fraud.csv', mime='text/csv')
 
 #         # SHAP Importance Plot for Random Forest
-#         st.subheader("🎯 Feature Importance for Identity Fraud Detection")
+#         st.subheader(" Feature Importance for Identity Fraud Detection")
 #         explainer = shap.TreeExplainer(rf_model)
 #         shap_values = explainer.shap_values(df.drop(columns=['Fraud_Prediction'], errors='ignore'))
 #         shap.summary_plot(shap_values[1], df.drop(columns=['Fraud_Prediction'], errors='ignore'), plot_type="bar", show=False)
 #         st.pyplot(plt.gcf())
 #         plt.clf()
 
-#     if col2.button("🧪 Synthetic Identity Check"):
+#     if col2.button(" Synthetic Identity Check"):
 #         synthetic_fraud = detect_synthetic_fraud(df)
-#         st.warning(f"🧪 Synthetic Identities Detected: {len(synthetic_fraud)}")
+#         st.warning(f"Synthetic Identities Detected: {len(synthetic_fraud)}")
 #         st.dataframe(synthetic_fraud)
 #         csv = synthetic_fraud.to_csv(index=False).encode('utf-8')
-#         st.download_button("⬇️ Download Synthetic Identities", data=csv, file_name='synthetic_fraud.csv', mime='text/csv')
+#         st.download_button("⬇ Download Synthetic Identities", data=csv, file_name='synthetic_fraud.csv', mime='text/csv')
 
 #         # SHAP Importance Plot for XGBoost
-#         st.subheader("🎯 Feature Importance for Synthetic Identity Detection")
+#         st.subheader(" Feature Importance for Synthetic Identity Detection")
 #         explainer = shap.TreeExplainer(xgb_model)
 #         shap_values = explainer.shap_values(df.drop(columns=['Fraud_Prediction'], errors='ignore'))
 #         shap.summary_plot(shap_values, df.drop(columns=['Fraud_Prediction'], errors='ignore'), plot_type="bar", show=False)
 #         st.pyplot(plt.gcf())
 #         plt.clf()
 
-#     if col3.button("🐴 Mule Account Check"):
+#     if col3.button(" Mule Account Check"):
 #         mule_fraud = detect_mule_accounts(df)
-#         st.warning(f"🐴 Mule Accounts Detected: {len(mule_fraud)}")
+#         st.warning(f" Mule Accounts Detected: {len(mule_fraud)}")
 #         st.dataframe(mule_fraud)
 #         csv = mule_fraud.to_csv(index=False).encode('utf-8')
-#         st.download_button("⬇️ Download Mule Accounts", data=csv, file_name='mule_fraud.csv', mime='text/csv')
+#         st.download_button("⬇ Download Mule Accounts", data=csv, file_name='mule_fraud.csv', mime='text/csv')
 
 #         # SHAP Importance Plot for Isolation Forest
-#         st.subheader("🎯 Feature Importance for Mule Account Detection")
+#         st.subheader(" Feature Importance for Mule Account Detection")
 #         explainer = shap.TreeExplainer(iso_forest)
 #         shap_values = explainer.shap_values(df.drop(columns=['Fraud_Prediction'], errors='ignore'))
 #         shap.summary_plot(shap_values, df.drop(columns=['Fraud_Prediction'], errors='ignore'), plot_type="bar", show=False)
@@ -181,18 +181,18 @@
 #     st.markdown("---")
 
 #     # Animated Fraud Pie Chart
-#     st.subheader("Fraud vs Normal Pie Chart 📊")
+#     st.subheader("Fraud vs Normal Pie Chart ")
 #     if 'Fraud_Prediction' in df.columns:
 #         pie_data = df['Fraud_Prediction'].value_counts().reset_index()
 #         pie_data.columns = ['Fraud_Label', 'Count']
 #         pie_data['Fraud_Label'] = pie_data['Fraud_Label'].map({0: 'Normal', 1: 'Fraud', -1: 'Anomaly'})
 
-#         fig = px.pie(pie_data, values='Count', names='Fraud_Label', title='Fraud vs Normal Accounts 🍰',
+#         fig = px.pie(pie_data, values='Count', names='Fraud_Label', title='Fraud vs Normal Accounts ',
 #                      color_discrete_sequence=px.colors.sequential.RdBu)
 #         st.plotly_chart(fig, use_container_width=True)
 
 # else:
-#     st.info("👈 Please upload a CSV file from the sidebar to begin!")
+#     st.info(" Please upload a CSV file from the sidebar to begin!")
 # import streamlit as st
 # import pandas as pd
 # import plotly.express as px
@@ -212,8 +212,8 @@
 # iso_forest = joblib.load(os.path.join(MODEL_DIR, "isolation_forest.pkl"))
 
 # # Streamlit config
-# st.set_page_config(page_title="Fraud Detection App 🚨", layout="wide")
-# st.title("🔎 Fraud Detection Dashboard")
+# st.set_page_config(page_title="Fraud Detection App ", layout="wide")
+# st.title(" Fraud Detection Dashboard")
 
 # # Preprocessing function
 # def preprocess_data(df):
@@ -241,69 +241,69 @@
 #     plt.clf()
 
 # # Upload section
-# st.sidebar.header("Upload your Dataset 📂")
+# st.sidebar.header("Upload your Dataset ")
 # uploaded_file = st.sidebar.file_uploader("Choose a CSV file", type="csv")
 
 # if uploaded_file:
 #     df = pd.read_csv(uploaded_file)
 #     df = preprocess_data(df)
-#     st.success("✅ File Uploaded and Preprocessed!")
+#     st.success(" File Uploaded and Preprocessed!")
 
-#     st.subheader("📄 Dataset Preview")
+#     st.subheader(" Dataset Preview")
 #     st.dataframe(df, use_container_width=True)
 
 #     # Initial Pie Chart
-#     st.subheader("📊 Initial Data Distribution")
+#     st.subheader(" Initial Data Distribution")
 #     if 'Class' in df.columns:
 #         pie_data = df['Class'].value_counts().reset_index()
 #         pie_data.columns = ['Label', 'Count']
 #         pie_data['Label'] = pie_data['Label'].map({0: 'Normal', 1: 'Fraud', -1: 'Anomaly'})
 
-#         fig = px.pie(pie_data, names='Label', values='Count', title="Normal vs Fraud Data 🍰",
+#         fig = px.pie(pie_data, names='Label', values='Count', title="Normal vs Fraud Data ",
 #                      color_discrete_sequence=px.colors.sequential.RdBu)
 #         st.plotly_chart(fig, use_container_width=True)
 #     else:
-#         st.info("ℹ️ No 'Class' column found. Pie chart not available.")
+#         st.info("ℹ No 'Class' column found. Pie chart not available.")
 
 #     st.markdown("---")
 
 #     # Fraud Detection Section
-#     st.subheader("🧹 Fraud Detection Section")
+#     st.subheader(" Fraud Detection Section")
 
 #     col1, col2, col3 = st.columns(3)
 
-#     if col1.button("🔍 Detect Identity Theft"):
+#     if col1.button(" Detect Identity Theft"):
 #         with st.spinner('Running Identity Theft Detection...'):
 #             fraud_df = detect_identity_fraud(df)
-#             st.warning(f"👤 Identity Thefts Detected: {len(fraud_df)}")
+#             st.warning(f"Identity Thefts Detected: {len(fraud_df)}")
 #             st.dataframe(fraud_df)
 #             csv = fraud_df.to_csv(index=False).encode('utf-8')
-#             st.download_button("⬇️ Download Identity Thefts", data=csv, file_name='identity_thefts.csv', mime='text/csv')
-#             st.subheader("📈 Feature Importance for Identity Theft")
+#             st.download_button("⬇ Download Identity Thefts", data=csv, file_name='identity_thefts.csv', mime='text/csv')
+#             st.subheader(" Feature Importance for Identity Theft")
 #             plot_shap_summary(rf_model, df.drop(columns=["Class"], errors="ignore"))
 
-#     if col2.button("🧪 Detect Synthetic Identities"):
+#     if col2.button(" Detect Synthetic Identities"):
 #         with st.spinner('Running Synthetic Fraud Detection...'):
 #             fraud_df = detect_synthetic_fraud(df)
-#             st.warning(f"🧪 Synthetic Identities Detected: {len(fraud_df)}")
+#             st.warning(f" Synthetic Identities Detected: {len(fraud_df)}")
 #             st.dataframe(fraud_df)
 #             csv = fraud_df.to_csv(index=False).encode('utf-8')
-#             st.download_button("⬇️ Download Synthetic Identities", data=csv, file_name='synthetic_identities.csv', mime='text/csv')
-#             st.subheader("📈 Feature Importance for Synthetic Fraud")
+#             st.download_button("⬇ Download Synthetic Identities", data=csv, file_name='synthetic_identities.csv', mime='text/csv')
+#             st.subheader("Feature Importance for Synthetic Fraud")
 #             plot_shap_summary(xgb_model, df.drop(columns=["Class"], errors="ignore"))
 
-#     if col3.button("🐴 Detect Mule Accounts"):
+#     if col3.button(" Detect Mule Accounts"):
 #         with st.spinner('Running Mule Account Detection...'):
 #             fraud_df = detect_mule_accounts(df)
-#             st.warning(f"🐴 Mule Accounts Detected: {len(fraud_df)}")
+#             st.warning(f" Mule Accounts Detected: {len(fraud_df)}")
 #             st.dataframe(fraud_df)
 #             csv = fraud_df.to_csv(index=False).encode('utf-8')
-#             st.download_button("⬇️ Download Mule Accounts", data=csv, file_name='mule_accounts.csv', mime='text/csv')
-#             st.subheader("📈 Anomaly Detection (Mule Accounts) - No Feature Importance")
-#             st.info("ℹ️ Isolation Forest does not provide SHAP feature importance.")
+#             st.download_button("⬇ Download Mule Accounts", data=csv, file_name='mule_accounts.csv', mime='text/csv')
+#             st.subheader("Anomaly Detection (Mule Accounts) - No Feature Importance")
+#             st.info("ℹ Isolation Forest does not provide SHAP feature importance.")
 
 # else:
-#     st.info("👈 Please upload a CSV file from the sidebar to begin!")
+#     st.info(" Please upload a CSV file from the sidebar to begin!")
 
 # app.py
 # import streamlit as st
@@ -326,8 +326,8 @@
 # iso_forest = joblib.load(os.path.join(MODEL_DIR, "isolation_forest.pkl"))
 
 # # Streamlit config
-# st.set_page_config(page_title="Fraud Detection App 🚨", layout="wide")
-# st.title("🔎 Fraud Detection Dashboard")
+# st.set_page_config(page_title="Fraud Detection App ", layout="wide")
+# st.title(" Fraud Detection Dashboard")
 
 # # Preprocessing function
 # def preprocess_data(df):
@@ -352,89 +352,89 @@
 #     plt.clf()
 
 # # Upload section
-# st.sidebar.header("Upload your Dataset 📂")
+# st.sidebar.header("Upload your Dataset ")
 # uploaded_file = st.sidebar.file_uploader("Choose a CSV file", type="csv")
 
 # # Fraud type tagger
 # def tag_fraud(score):
 #     if score >= 0.85:
-#         return "🔥 Very Suspicious"
+#         return " Very Suspicious"
 #     elif score >= 0.7:
-#         return "⚠️ Mild Anomaly"
+#         return " Mild Anomaly"
 #     else:
-#         return "✅ Normal"
+#         return " Normal"
 
 # if uploaded_file:
 #     df = pd.read_csv(uploaded_file)
 #     df = preprocess_data(df)
-#     st.success("✅ File Uploaded and Preprocessed!")
+#     st.success(" File Uploaded and Preprocessed!")
 
-#     st.subheader("📄 Dataset Preview")
+#     st.subheader(" Dataset Preview")
 #     st.dataframe(df, use_container_width=True)
 
 #     # Initial Pie Chart
-#     st.subheader("📊 Initial Data Distribution")
+#     st.subheader(" Initial Data Distribution")
 #     if 'Class' in df.columns:
 #         pie_data = df['Class'].value_counts().reset_index()
 #         pie_data.columns = ['Label', 'Count']
 #         pie_data['Label'] = pie_data['Label'].map({0: 'Normal', 1: 'Fraud', -1: 'Anomaly'})
 
-#         fig = px.pie(pie_data, names='Label', values='Count', title="Normal vs Fraud Data 🍰",
+#         fig = px.pie(pie_data, names='Label', values='Count', title="Normal vs Fraud Data ",
 #                      color_discrete_sequence=px.colors.sequential.RdBu)
 #         st.plotly_chart(fig, use_container_width=True)
 #     else:
-#         st.info("ℹ️ No 'Class' column found. Pie chart not available.")
+#         st.info("ℹNo 'Class' column found. Pie chart not available.")
 
 #     st.markdown("---")
 
 #     # Fraud Detection Section
-#     st.subheader("🧹 Fraud Detection Section")
+#     st.subheader(" Fraud Detection Section")
 
 #     col1, col2, col3 = st.columns(3)
 
-#     if col1.button("🔍 Detect Identity Theft"):
+#     if col1.button(" Detect Identity Theft"):
 #         with st.spinner('Running Identity Theft Detection...'):
 #             fraud_df = detect_identity_fraud(df)
 #             fraud_df["Fraud Type"] = fraud_df["Fraud_Score"].apply(tag_fraud)
-#             st.warning(f"👤 Identity Thefts Detected: {len(fraud_df)}")
+#             st.warning(f" Identity Thefts Detected: {len(fraud_df)}")
 #             st.dataframe(fraud_df)
 
 #             csv = fraud_df.to_csv(index=False).encode('utf-8')
-#             st.download_button("⬇️ Download Identity Thefts", data=csv, file_name='identity_thefts.csv', mime='text/csv')
+#             st.download_button("⬇ Download Identity Thefts", data=csv, file_name='identity_thefts.csv', mime='text/csv')
 
-#             st.subheader("📈 Feature Importance for Identity Theft")
+#             st.subheader(" Feature Importance for Identity Theft")
 #             plot_type = st.radio("Choose Plot Type:", ["Bar", "Beeswarm"], horizontal=True)
 #             plot_shap_summary(rf_model, df.drop(columns=["Class"], errors="ignore"), plot_type=plot_type.lower())
 
-#     if col2.button("🧪 Detect Synthetic Identities"):
+#     if col2.button(" Detect Synthetic Identities"):
 #         with st.spinner('Running Synthetic Fraud Detection...'):
 #             fraud_df = detect_synthetic_fraud(df)
 #             fraud_df["Fraud Type"] = fraud_df["Fraud_Score"].apply(tag_fraud)
-#             st.warning(f"🧪 Synthetic Identities Detected: {len(fraud_df)}")
+#             st.warning(f" Synthetic Identities Detected: {len(fraud_df)}")
 #             st.dataframe(fraud_df)
 
 #             csv = fraud_df.to_csv(index=False).encode('utf-8')
-#             st.download_button("⬇️ Download Synthetic Identities", data=csv, file_name='synthetic_identities.csv', mime='text/csv')
+#             st.download_button("⬇ Download Synthetic Identities", data=csv, file_name='synthetic_identities.csv', mime='text/csv')
 
-#             st.subheader("📈 Feature Importance for Synthetic Fraud")
+#             st.subheader(" Feature Importance for Synthetic Fraud")
 #             plot_type = st.radio("Choose Plot Type:", ["Bar", "Beeswarm"], horizontal=True, key="synthetic_plot")
 #             plot_shap_summary(xgb_model, df.drop(columns=["Class"], errors="ignore"), plot_type=plot_type.lower())
 
-#     if col3.button("🐴 Detect Mule Accounts"):
+#     if col3.button(" Detect Mule Accounts"):
 #         with st.spinner('Running Mule Account Detection...'):
 #             fraud_df = detect_mule_accounts(df)
-#             fraud_df["Fraud Type"] = fraud_df["Anomaly_Score"].apply(lambda x: "🔥 Very Suspicious" if x > 0.2 else "⚠️ Mild Anomaly")
-#             st.warning(f"🐴 Mule Accounts Detected: {len(fraud_df)}")
+#             fraud_df["Fraud Type"] = fraud_df["Anomaly_Score"].apply(lambda x: " Very Suspicious" if x > 0.2 else "⚠ Mild Anomaly")
+#             st.warning(f" Mule Accounts Detected: {len(fraud_df)}")
 #             st.dataframe(fraud_df)
 
 #             csv = fraud_df.to_csv(index=False).encode('utf-8')
-#             st.download_button("⬇️ Download Mule Accounts", data=csv, file_name='mule_accounts.csv', mime='text/csv')
+#             st.download_button("⬇ Download Mule Accounts", data=csv, file_name='mule_accounts.csv', mime='text/csv')
 
-#             st.subheader("📈 Anomaly Detection (Mule Accounts) - No Feature Importance")
-#             st.info("ℹ️ Isolation Forest does not provide SHAP feature importance.")
+#             st.subheader(" Anomaly Detection (Mule Accounts) - No Feature Importance")
+#             st.info("ℹ Isolation Forest does not provide SHAP feature importance.")
 
 # else:
-#     st.info("👈 Please upload a CSV file from the sidebar to begin!")
+#     st.info(" Please upload a CSV file from the sidebar to begin!")
 # app.py
 # import numpy as np
 # import streamlit as st
@@ -795,7 +795,7 @@
 
 #     if "fraud_df" in st.session_state and not st.session_state.fraud_df.empty and "fraud_model" in st.session_state and st.session_state.fraud_model:
 #         st.markdown("---")
-#         st.subheader("🔍 SHAP for Individual Fraud Case")
+#         st.subheader(" SHAP for Individual Fraud Case")
 
 #         selected_index = st.selectbox("Select a row to explain", st.session_state.fraud_df.index.tolist(), key="row_selector")
 
@@ -932,7 +932,7 @@
 #     try:
 #         df = pd.read_csv(file_path)
 #         df = preprocess_data(df)
-#         st.success(f"✅ Loaded dataset: {selected_file}")
+#         st.success(f" Loaded dataset: {selected_file}")
 #     except Exception as e:
 #         st.error(f"Failed to load dataset: {e}")
 #         st.stop()
@@ -1249,21 +1249,21 @@
     #         else:
     #             st.warning("CatBoost model does not contain feature names. Falling back to full dataframe.")
     #             st.session_state.input_df = udf_fraud_df
-    #         st.success(f"✅ {len(udf_fraud_df)} suspicious user-device cases detected")
+    #         st.success(f" {len(udf_fraud_df)} suspicious user-device cases detected")
     #         st.dataframe(udf_fraud_df.head(100), use_container_width=True)
     #                     # Export flagged cases
     #         csv_export = udf_fraud_df.to_csv(index=False).encode("utf-8")
-    #         st.download_button("📤 Download Flagged Cases CSV", csv_export, file_name="flagged_user_device_cases.csv")
+    #         st.download_button(" Download Flagged Cases CSV", csv_export, file_name="flagged_user_device_cases.csv")
 
     #         json_export = udf_fraud_df.to_json(orient="records", indent=4)
-    #         st.download_button("📥 Download Flagged Profiles JSON", json_export, file_name="user_device_fraud_profiles.json")
-    #         with st.expander("📋 Preview Fraud Profile JSON"):
+    #         st.download_button(" Download Flagged Profiles JSON", json_export, file_name="user_device_fraud_profiles.json")
+    #         with st.expander(" Preview Fraud Profile JSON"):
     #             st.json(json_export)
 
 # SHAP Explanation Section
 # if "fraud_df" in st.session_state and "fraud_model" in st.session_state and st.session_state.fraud_model:
 #     st.markdown("---")
-#     st.subheader("🔍 SHAP for Individual Fraud Case")
+#     st.subheader(" SHAP for Individual Fraud Case")
 #     selected_index = st.selectbox("Select a row to explain", st.session_state.fraud_df.index.tolist(), key="row_selector")
 #     if selected_index is not None:
 #         row = st.session_state.fraud_df.loc[selected_index]
@@ -1303,7 +1303,7 @@
 #             plt.clf()
 #         except Exception as e:
 #             st.warning(f"Waterfall plot failed: {e}")
-#     st.subheader("📊 Global SHAP Importance")
+#     st.subheader(" Global SHAP Importance")
 #     plot_type = st.radio("Choose SHAP Plot Type", ["Bar Plot", "Beeswarm Plot"], horizontal=True)
 #     plot_shap_summary(st.session_state.fraud_model, st.session_state.input_df, plot_type)
 # else:
@@ -1421,7 +1421,7 @@ if not st.session_state.authenticated:
         password = st.text_input("Password", type="password")
         if st.button("Signup"):
             if signup(emp_id, password, email):
-                st.success("🎉 Signup successful! Check your email for OTP.")
+                st.success(" Signup successful! Check your email for OTP.")
             else:
                 st.error("Signup failed")
 
@@ -1432,10 +1432,10 @@ if not st.session_state.authenticated:
             if verify_otp(emp_id, otp):
                 st.session_state.authenticated = True
                 st.session_state.user_id = emp_id
-                st.success("✅ OTP verified! Welcome.")
+                st.success(" OTP verified! Welcome.")
                 st.rerun()
             else:
-                st.error("❌ Invalid or expired OTP.")
+                st.error(" Invalid or expired OTP.")
 
     elif tab == "Login":
         emp_id = st.text_input("Employee ID")
@@ -1443,14 +1443,14 @@ if not st.session_state.authenticated:
         if st.button("Login"):
             user = get_user_by_employee_id(emp_id)
             if user and user.get("login_attempts", 0) >= 3:
-                st.error("🚫 Account locked due to 3 failed attempts.")
+                st.error(" Account locked due to 3 failed attempts.")
             elif login(emp_id, password):
                 st.session_state.authenticated = True
                 st.session_state.user_id = emp_id
-                st.success("🎉 Login successful.")
+                st.success(" Login successful.")
                 st.rerun()
             else:
-                st.error("❌ Invalid credentials.")
+                st.error(" Invalid credentials.")
 
 
     elif tab == "Forgot Password":
@@ -1461,7 +1461,7 @@ if not st.session_state.authenticated:
                 st.session_state.reset_mode = True
                 st.session_state.emp_id_for_reset = emp_id
             else:
-                st.error("❌ Could not send OTP. Please check Employee ID.")
+                st.error(" Could not send OTP. Please check Employee ID.")
 
         if st.session_state.reset_mode:
             otp = st.text_input("Enter OTP")
@@ -1469,12 +1469,12 @@ if not st.session_state.authenticated:
             if st.button("Reset Password"):
                 from auth import reset_password
                 if reset_password(st.session_state.emp_id_for_reset, otp, new_password):
-                    st.success("✅ Password reset successful!")
+                    st.success(" Password reset successful!")
                     st.session_state.reset_mode = False
                 else:
-                    st.error("❌ Invalid OTP or failed to reset.")
+                    st.error(" Invalid OTP or failed to reset.")
     st.stop()
-  # 🔁 Force rerun to show dashboard
+  
 
 
 
@@ -1498,13 +1498,12 @@ def get_model_features(model):
 
 
 st.title("Fraud Detection Dashboard")
-# Show top bar when logged in
 with st.sidebar:
     st.markdown("### 👤 Account")
     st.markdown(f"Welcome, **{st.session_state.user_id}**")
     user_info = get_user_by_employee_id(st.session_state.user_id)
     if user_info:
-        st.markdown(f"📧 Logged in as: `{user_info['email']}`")
+        st.markdown(f" Logged in as: `{user_info['email']}`")
 
 
     if st.button("🚪 Logout"):
@@ -1548,9 +1547,7 @@ def plot_shap_summary(model, X, plot_type):
         explainer = shap.TreeExplainer(model)
         sample_X = X.sample(min(300, len(X)), random_state=42)
         shap_values = explainer.shap_values(sample_X)
-        # Handle multi-class models
         if isinstance(shap_values, list):
-            # Pick class 1 (fraud) if available
             shap_values = shap_values[1] if len(shap_values) > 1 else shap_values[0]
         st.subheader(" SHAP Summary Plot")
         plt.figure()
@@ -1560,7 +1557,6 @@ def plot_shap_summary(model, X, plot_type):
             shap.summary_plot(shap_values, sample_X, plot_type="violin", max_display=10, show=False)
         st.pyplot(plt.gcf())
         plt.clf()
-        # Top 10 features as a bar plot
         vals = np.abs(shap_values).mean(0)
         top_features = pd.DataFrame({
             'Feature': sample_X.columns,
@@ -1578,7 +1574,6 @@ def plot_shap_summary(model, X, plot_type):
     except Exception as e:
         st.error(f"SHAP summary failed: {e}")
 
-# Sidebar file selection
 st.sidebar.header(" Data Source")
 files = [f for f in os.listdir(DATA_PATH) if f.endswith(".csv")]
 selected_file = st.sidebar.selectbox("Select a dataset", files)
@@ -1729,9 +1724,9 @@ if selected_file:
             else:
                 st.warning("CatBoost model does not contain feature names. Falling back to full dataframe.")
                 st.session_state.input_df = udf_fraud_df
-            st.success(f"✅ {len(udf_fraud_df)} suspicious user-device cases detected")
+            st.success(f" {len(udf_fraud_df)} suspicious user-device cases detected")
             st.dataframe(udf_fraud_df.head(100), use_container_width=True)
-                        # Export flagged cases
+                        
             csv_export = udf_fraud_df.to_csv(index=False).encode("utf-8")
             st.download_button("📤 Download Flagged Cases CSV", csv_export, file_name="flagged_user_device_cases.csv")
 
@@ -1743,7 +1738,7 @@ if selected_file:
 # SHAP Explanation Section
 # if "fraud_df" in st.session_state and "fraud_model" in st.session_state and st.session_state.fraud_model:
 #     st.markdown("---")
-#     st.subheader("🔍 SHAP for Individual Fraud Case")
+#     st.subheader(" SHAP for Individual Fraud Case")
 #     selected_index = st.selectbox("Select a row to explain", st.session_state.fraud_df.index.tolist(), key="row_selector")
 #     if selected_index is not None:
 #         row = st.session_state.fraud_df.loc[selected_index]
@@ -1783,7 +1778,7 @@ if selected_file:
 #             plt.clf()
 #         except Exception as e:
 #             st.warning(f"Waterfall plot failed: {e}")
-#     st.subheader("📊 Global SHAP Importance")
+#     st.subheader(" Global SHAP Importance")
 #     plot_type = st.radio("Choose SHAP Plot Type", ["Bar Plot", "Beeswarm Plot"], horizontal=True)
 #     plot_shap_summary(st.session_state.fraud_model, st.session_state.input_df, plot_type)
 # else:
@@ -1796,7 +1791,6 @@ if "fraud_df" in st.session_state and "fraud_model" in st.session_state and st.s
     if selected_index is not None:
         row = st.session_state.fraud_df.loc[selected_index]
         model = st.session_state.fraud_model
-        # Use model.feature_names_ for CatBoost (if available), fallback to full row
         if hasattr(model, "feature_names_"):
             feature_names = model.feature_names_
             input_data = pd.DataFrame([row[feature_names].values], columns=feature_names)
@@ -1805,13 +1799,11 @@ if "fraud_df" in st.session_state and "fraud_model" in st.session_state and st.s
             input_data = pd.DataFrame([row.values], columns=feature_names)
         explainer = shap.TreeExplainer(model)
         shap_values = explainer.shap_values(input_data)
-        # Handle multi-class
         if isinstance(shap_values, list):
             shap_values = shap_values[1] if len(shap_values) > 1 else shap_values[0]
         st.write("### Selected Row")
         st.dataframe(row.to_frame().T, use_container_width=True)
         
-        # Show top contributing features for this row
         st.write("### Top Contributing Features for This Row")
         contrib = pd.DataFrame({
             'Feature': get_model_features(model),
@@ -1856,7 +1848,7 @@ if "fraud_df" in st.session_state and "fraud_model" in st.session_state and st.s
     plot_type = st.radio("Choose SHAP Plot Type", ["Bar Plot", "Beeswarm Plot"], horizontal=True)
     plot_shap_summary(st.session_state.fraud_model, st.session_state.input_df, plot_type)
 # ==============================
-# 🔍 Visual Behavior Profiling
+#  Visual Behavior Profiling
 # ==============================
 if "fraud_df" in st.session_state:
     st.markdown("---")
